@@ -86,7 +86,7 @@ class _CrateState extends State<Crate> {
               const BottomNavigationBarItem(
                   label: 'Home', icon: Icon(Icons.home_rounded)),
               const BottomNavigationBarItem(
-                  label: 'Video',
+                  label: 'Follow',
                   icon: Icon(
                     Icons.sports_football_rounded,
                   )),

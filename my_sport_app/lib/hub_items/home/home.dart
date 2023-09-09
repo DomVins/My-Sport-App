@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;
+import 'package:webview_flutter/webview_flutter.dart';
 import '../../constants/colors.dart';
 import 'sub_pages/external_site.dart';
 import 'sub_pages/browse.dart';
@@ -25,13 +25,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   late TabController tc;
 
-  double f = 13;
-  TextStyle light = const TextStyle(
-    color: Colors.black,
-    fontSize: 14,
-  );
-  TextStyle bold = const TextStyle(
-      color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold);
+  String featureImage = '';
+  String title = '';
 
   WebViewController webViewController = WebViewController()
     ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -44,34 +39,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         onPageStarted: (String url) {},
         onPageFinished: (String url) {},
         onWebResourceError: (WebResourceError error) {},
-        onNavigationRequest: (NavigationRequest request) {
-          if (request.url.startsWith('https://www.youtube.com/')) {
-            return NavigationDecision.prevent;
-          }
-          return NavigationDecision.navigate;
-        },
       ),
     )
-    ..loadRequest(Uri.parse('https://google.com'));
-
-  String featureImage = '';
-  String title = '';
-
-  Future<void> _fetchAndExtractFeatureImageAndTitle() async {
-    try {
-      String htmlContent =
-          await fetchHTMLContent('https://politicsnigeria.com/');
-      String featureImageF = extractFeatureImage(htmlContent);
-      String titleF = extractTitle(htmlContent);
-      setState(() {
-        featureImage = featureImageF;
-        title = titleF;
-      });
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
-
+    ..loadRequest(Uri.parse('https://mfeatures24.com.ng/category/hot/'));
 
   @override
   void initState() {
@@ -83,163 +53,80 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        if (await webViewController.canGoBack()) {
-          webViewController.goBack();
-          return false;
-        } else {
-          return true;
-        }
-      },
-      child: Scaffold(
-        body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              header(context),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    mediaIcons('Google', Image.asset("assets/icons/google.png"),
-                        'https://google.com'),
-                    mediaIcons('Youtube', Image.asset("assets/icons/yt.png"),
-                        'https://www.youtube.com/'),
-                    mediaIcons(
-                        'Facebook',
-                        Image.asset("assets/icons/facebook.png"),
-                        'https://www.facebook.com/'),
-                    mediaIcons(
-                        'Instagram',
-                        Image.asset("assets/icons/insta.png"),
-                        'https://www.instagram.com/'),
-                    mediaIcons(
-                        'Twitter',
-                        Image.asset("assets/icons/twitter.png"),
-                        'https://www.twitter.com/'),
-                  ],
-                ),
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            header(context),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  mediaIcons('Google', Image.asset("assets/icons/google.png"),
+                      'https://google.com'),
+                  mediaIcons('Youtube', Image.asset("assets/icons/yt.png"),
+                      'https://www.youtube.com/'),
+                  mediaIcons(
+                      'Facebook',
+                      Image.asset("assets/icons/facebook.png"),
+                      'https://www.facebook.com/'),
+                  mediaIcons('Instagram', Image.asset("assets/icons/insta.png"),
+                      'https://www.instagram.com/'),
+                  mediaIcons('Twitter', Image.asset("assets/icons/twitter.png"),
+                      'https://www.twitter.com/'),
+                ],
               ),
-              Container(
-                  height: 0.5, color: Colors.grey, width: double.maxFinite),
-              SizedBox(
-                height: 40,
-                child: TabBar(
-                    indicatorWeight: 4,
-                    isScrollable: true,
+            ),
+            Container(height: 0.5, color: Colors.grey, width: double.maxFinite),
+            SizedBox(
+              height: 40,
+              child: TabBar(
+                  indicatorWeight: 4,
+                  isScrollable: true,
+                  controller: tc,
+                  tabs: [
+                    Tab(
+                        child: Text(
+                      'For you',
+                      style: tc.index == 0 ? bold : light,
+                    )),
+                    Tab(
+                        child:
+                            Text('Hot', style: tc.index == 1 ? bold : light)),
+                    Tab(
+                        child: Text('Official',
+                            style: tc.index == 2 ? bold : light)),
+                    Tab(
+                        child: Text('Transfers',
+                            style: tc.index == 3 ? bold : light)),
+                    Tab(
+                        child:
+                            Text('EPL', style: tc.index == 4 ? bold : light)),
+                    Tab(
+                        child: Text('La Liga',
+                            style: tc.index == 5 ? bold : light)),
+                    Tab(
+                        child: Text('Serie A',
+                            style: tc.index == 6 ? bold : light)),
+                    Tab(
+                        child:
+                            Text('UEFA', style: tc.index == 7 ? bold : light)),
+                    Tab(
+                        child:
+                            Text('More', style: tc.index == 8 ? bold : light)),
+                  ]),
+            ),
+            Container(height: 0.5, color: Colors.grey, width: double.maxFinite),
+            Expanded(
+                child: TabBarView(
+                    physics: const NeverScrollableScrollPhysics(),
                     controller: tc,
-                    tabs: [
-                      Tab(
-                          child: Text(
-                        'For you',
-                        style: tc.index == 0 ? bold : light,
-                      )),
-                      Tab(
-                          child:
-                              Text('Hot', style: tc.index == 1 ? bold : light)),
-                      Tab(
-                          child: Text('Official',
-                              style: tc.index == 2 ? bold : light)),
-                      Tab(
-                          child: Text('Transfers',
-                              style: tc.index == 3 ? bold : light)),
-                      Tab(
-                          child:
-                              Text('EPL', style: tc.index == 4 ? bold : light)),
-                      Tab(
-                          child: Text('La Liga',
-                              style: tc.index == 5 ? bold : light)),
-                      Tab(
-                          child: Text('Serie A',
-                              style: tc.index == 6 ? bold : light)),
-                      Tab(
-                          child: Text('UEFA',
-                              style: tc.index == 7 ? bold : light)),
-                      Tab(
-                          child: Text('More',
-                              style: tc.index == 8 ? bold : light)),
-                    ]),
-              ),
-              Container(
-                  height: 0.5, color: Colors.grey, width: double.maxFinite),
-              Expanded(
-                child: TabBarView(controller: tc, children: [
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Row(
-                            children: [
-                              const Icon(Icons.fireplace_rounded),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              const Text(
-                                "Top Stories",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600),
-                              ),
-                              Expanded(
-                                child: Container(),
-                              ),
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const MoreTopStories()));
-                                  },
-                                  child: const Text("More >>"))
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 20,
-                          ),
-                          height: 220,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: [
-                              topStories(title, featureImage, context,
-                                  "https://politicsnigeria.com/"),
-                              topStories(title, featureImage, context,
-                                  "https://mfeatures24.com.ng/"),
-                              topStories(title, featureImage, context,
-                                  "https://mfeatures24.com.ng/"),
-                              topStories(title, featureImage, context,
-                                  "https://mfeatures24.com.ng/"),
-                              topStories(title, featureImage, context,
-                                  "https://mfeatures24.com.ng/"),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        news(context),
-                        news(context),
-                        addsBlock(),
-                        news(context),
-                        news(context),
-                        news(context),
-                        news(context),
-                        addsBlock(),
-                        news(context),
-                        news(context),
-                        news(context),
-                        news(context),
-                        addsBlock(),
-                        news(context),
-                        news(context),
-                      ],
-                    ),
-                  ),
+                    children: [
+                  foryou(),
+                  categories(),
                   newsContainer(context),
                   newsContainer(context),
                   newsContainer(context),
@@ -247,11 +134,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   newsContainer(context),
                   newsContainer(context),
                   newsContainer(context),
-                  newsContainer(context),
-                ]),
-              )
-            ],
-          ),
+                ]))
+          ],
         ),
       ),
     );
@@ -259,7 +143,88 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   void _onTabChanged() {
     if (tc.indexIsChanging) return;
-    setState(() {});
+    switch (tc.index) {
+      
+    }
+  }
+
+  Widget foryou() {
+    return SingleChildScrollView(
+        child: Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Row(
+            children: [
+              const Icon(Icons.fireplace_rounded),
+              const SizedBox(
+                width: 10,
+              ),
+              const Text(
+                "Top Stories",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
+              Expanded(
+                child: Container(),
+              ),
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MoreTopStories()));
+                  },
+                  child: const Text("More >>"))
+            ],
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.only(
+            top: 20,
+          ),
+          height: 220,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              topStories(
+                  title, featureImage, context, "https://politicsnigeria.com/"),
+              topStories(
+                  title, featureImage, context, "https://mfeatures24.com.ng/"),
+              topStories(
+                  title, featureImage, context, "https://mfeatures24.com.ng/"),
+              topStories(
+                  title, featureImage, context, "https://mfeatures24.com.ng/"),
+              topStories(
+                  title, featureImage, context, "https://mfeatures24.com.ng/"),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        news(context),
+        news(context),
+        addsBlock(),
+        news(context),
+        news(context),
+        news(context),
+        news(context),
+        addsBlock(),
+        news(context),
+        news(context),
+        news(context),
+        news(context),
+        addsBlock(),
+        news(context),
+        news(context),
+      ],
+    ));
+  }
+
+  Widget categories() {
+    return WebViewWidget(
+      controller: webViewController,
+    );
   }
 
   Widget mediaIcons(String name, Image image, String url) {
@@ -389,18 +354,18 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       const SizedBox(),
                       InkWell(
                           onTap: () async {
-                            if (await webViewController.canGoBack()) {
+                            /*  if (await webViewController.canGoBack()) {
                               Navigator.pop(context);
                               webViewController.goBack();
-                            }
+                            } */
                           },
                           child: const Icon(Icons.arrow_back)),
                       InkWell(
                           onTap: () async {
-                            if (await webViewController.canGoForward()) {
+                            /* if (await webViewController.canGoForward()) {
                               Navigator.pop(context);
                               webViewController.goForward();
-                            }
+                            } */
                           },
                           child: const Icon(Icons.arrow_forward)),
                       const Icon(Icons.star_outline),
@@ -589,150 +554,166 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       ]),
     );
   }
-}
 
-addsBlock() {
-  return Container(
-    width: double.maxFinite,
-    height: 250,
-    // margin: EdgeInsets.symmetric(horizontal: 10),
-    decoration: BoxDecoration(
-        color: Colors.grey.shade300, borderRadius: BorderRadius.circular(5)),
-    child: const Center(
-      child: Text(
-        "300x250 Adds",
-        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-      ),
-    ),
-  );
-}
+  Future<void> _fetchAndExtractFeatureImageAndTitle() async {
+    try {
+      String htmlContent =
+          await fetchHTMLContent('https://politicsnigeria.com/');
+      String featureImageF = extractFeatureImage(htmlContent);
+      String titleF = extractTitle(htmlContent);
+      setState(() {
+        featureImage = featureImageF;
+        title = titleF;
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
 
-news(BuildContext context) {
-  return InkWell(
-    onTap: () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const PostPage()));
-    },
-    child: Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      child: Row(
-        children: [
-          const Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                    "Niger Republic: We'll Crush You Like Maggots, Dont UnderestimateNigerian Army"),
-                Text("Freebiesloaded")
-              ],
-            ),
-          ),
-          Container(
-            width: 70,
-            height: 70,
-            decoration: BoxDecoration(
-                color: Colors.grey.shade400,
-                borderRadius: BorderRadius.circular(2),
-                boxShadow: const [
-                  BoxShadow(color: Colors.grey, blurRadius: 2.0)
-                ]),
-          )
-        ],
-      ),
-    ),
-  );
-}
-
-topStories(String title, String image, BuildContext context, String url) {
-  return InkWell(
-    onTap: () {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ExternalSite(
-                    url: url,
-                  )));
-    },
-    child: Container(
-      height: double.maxFinite,
-      margin: const EdgeInsets.only(left: 18, bottom: 10),
-      width: 190,
+  addsBlock() {
+    return Container(
+      width: double.maxFinite,
+      height: 250,
+      // margin: EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-          color: Colors.grey.shade400,
-          borderRadius: BorderRadius.circular(2),
-          boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 2.0)]),
+          color: Colors.grey.shade300, borderRadius: BorderRadius.circular(5)),
+      child: const Center(
+        child: Text(
+          "300x250 Adds",
+          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+
+  news(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const PostPage()));
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        child: Row(
+          children: [
+            const Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                      "Niger Republic: We'll Crush You Like Maggots, Dont UnderestimateNigerian Army"),
+                  Text("Freebiesloaded")
+                ],
+              ),
+            ),
+            Container(
+              width: 70,
+              height: 70,
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade400,
+                  borderRadius: BorderRadius.circular(2),
+                  boxShadow: const [
+                    BoxShadow(color: Colors.grey, blurRadius: 2.0)
+                  ]),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  topStories(String title, String image, BuildContext context, String url) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ExternalSite(
+                      url: url,
+                    )));
+      },
+      child: Container(
+        height: double.maxFinite,
+        margin: const EdgeInsets.only(left: 18, bottom: 10),
+        width: 190,
+        decoration: BoxDecoration(
+            color: Colors.grey.shade400,
+            borderRadius: BorderRadius.circular(2),
+            boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 2.0)]),
+        child: Column(
+          children: [
+            Expanded(
+                child: SizedBox(
+              width: double.maxFinite,
+              child: image.isNotEmpty
+                  ? Image.network(
+                      image,
+                      fit: BoxFit.cover,
+                    )
+                  : const Center(child: CircularProgressIndicator()),
+            )),
+            Container(
+              padding: const EdgeInsets.all(10),
+              height: 80,
+              width: double.maxFinite,
+              color: Colors.white,
+              child: Center(
+                  child: Text(
+                title,
+                style: const TextStyle(fontWeight: FontWeight.w600),
+                overflow: TextOverflow.fade,
+              )),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  newsContainer(BuildContext context) {
+    return SingleChildScrollView(
       child: Column(
         children: [
-          Expanded(
-              child: SizedBox(
-            width: double.maxFinite,
-            child: image.isNotEmpty
-                ? Image.network(
-                    image,
-                    fit: BoxFit.cover,
-                  )
-                : const Center(child: CircularProgressIndicator()),
-          )),
-          Container(
-            padding: const EdgeInsets.all(10),
-            height: 80,
-            width: double.maxFinite,
-            color: Colors.white,
-            child: Center(
-                child: Text(
-              title,
-              style: const TextStyle(fontWeight: FontWeight.w600),
-              overflow: TextOverflow.fade,
-            )),
-          )
+          const SizedBox(
+            height: 20,
+          ),
+          news(context),
+          news(context),
+          addsBlock(),
+          news(context),
+          news(context),
+          news(context),
+          news(context),
+          addsBlock(),
+          news(context),
+          news(context),
+          news(context),
+          news(context),
+          addsBlock(),
+          news(context),
+          news(context),
         ],
       ),
-    ),
-  );
-}
+    );
+  }
 
-newsContainer(BuildContext context) {
-  return SingleChildScrollView(
-    child: Column(
-      children: [
-        const SizedBox(
-          height: 20,
-        ),
-        news(context),
-        news(context),
-        addsBlock(),
-        news(context),
-        news(context),
-        news(context),
-        news(context),
-        addsBlock(),
-        news(context),
-        news(context),
-        news(context),
-        news(context),
-        addsBlock(),
-        news(context),
-        news(context),
-      ],
-    ),
-  );
-}
+  Future<String> fetchHTMLContent(String link) async {
+    final response = await http.get(Uri.parse(link));
+    return response.body;
+  }
 
-Future<String> fetchHTMLContent(String link) async {
-  final response = await http.get(Uri.parse(link));
-  return response.body;
-}
+  String extractFeatureImage(String htmlContent) {
+    var document = parse(htmlContent);
+    var imageElement = document.querySelector('meta[property="og:image"]');
+    return imageElement?.attributes['content'] ??
+        ''; // Return the image URL or an empty string if not found.
+  }
 
-String extractFeatureImage(String htmlContent) {
-  var document = parse(htmlContent);
-  var imageElement = document.querySelector('meta[property="og:image"]');
-  return imageElement?.attributes['content'] ??
-      ''; // Return the image URL or an empty string if not found.
-}
-
-String extractTitle(String htmlContent) {
-  var document = parse(htmlContent);
-  var titleElement = document.querySelector('title');
-  return titleElement?.text ??
-      ''; // Return the title or an empty string if not found.
+  String extractTitle(String htmlContent) {
+    var document = parse(htmlContent);
+    var titleElement = document.querySelector('title');
+    return titleElement?.text ??
+        ''; // Return the title or an empty string if not found.
+  }
+//
 }

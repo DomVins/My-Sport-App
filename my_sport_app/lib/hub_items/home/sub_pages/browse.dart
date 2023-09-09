@@ -3,7 +3,6 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../constants/colors.dart';
 
-
 class Browse extends StatefulWidget {
   const Browse({super.key, this.search, this.url});
   final bool? search;
@@ -27,12 +26,6 @@ class _BrowseState extends State<Browse> {
         onPageStarted: (String url) {},
         onPageFinished: (String url) {},
         onWebResourceError: (WebResourceError error) {},
-        /*  onNavigationRequest: (NavigationRequest request) {
-          if (request.url.startsWith('https://www.youtube.com/')) {
-            return NavigationDecision.prevent;
-          }
-          return NavigationDecision.navigate;
-        }, */
       ),
     )
     ..loadRequest(Uri.parse('https://google.com'));
