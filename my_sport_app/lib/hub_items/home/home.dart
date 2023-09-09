@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
-import 'package:my_sport_app/home/post_page.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
 import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;
-
-import '../colors.dart';
-import '../external_site.dart';
-import '../home/browse.dart';
-import '../home/morestories.dart';
-import '../home/options/downloads.dart';
-import '../home/options/history.dart';
-import '../home/options/tabs.dart';
+import '../../constants/colors.dart';
+import 'sub_pages/external_site.dart';
+import 'sub_pages/browse.dart';
+import 'sub_pages/morestories.dart';
+import 'sub_pages/options/downloads.dart';
+import 'sub_pages/options/history.dart';
+import 'sub_pages/options/tabs.dart';
+import 'sub_pages/post_page.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -61,8 +59,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   Future<void> _fetchAndExtractFeatureImageAndTitle() async {
     try {
-      String htmlContent = await fetchHTMLContent(
-          'https://mfeatures24.com.ng/2023/08/05/i-love-her-but-i-would-never-call-her-again-pete-edochie-discusses-his-relationship-to-genevieve-nnaji/');
+      String htmlContent =
+          await fetchHTMLContent('https://politicsnigeria.com/');
       String featureImageF = extractFeatureImage(htmlContent);
       String titleF = extractTitle(htmlContent);
       setState(() {
@@ -73,6 +71,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       print('Error: $e');
     }
   }
+
 
   @override
   void initState() {
@@ -208,15 +207,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                             scrollDirection: Axis.horizontal,
                             children: [
                               topStories(title, featureImage, context,
-                                  "https://mfeatures24.com.ng/2023/08/05/i-love-her-but-i-would-never-call-her-again-pete-edochie-discusses-his-relationship-to-genevieve-nnaji/"),
+                                  "https://politicsnigeria.com/"),
                               topStories(title, featureImage, context,
-                                  "https://mfeatures24.com.ng/2023/08/05/i-love-her-but-i-would-never-call-her-again-pete-edochie-discusses-his-relationship-to-genevieve-nnaji/"),
+                                  "https://mfeatures24.com.ng/"),
                               topStories(title, featureImage, context,
-                                  "https://mfeatures24.com.ng/2023/08/05/i-love-her-but-i-would-never-call-her-again-pete-edochie-discusses-his-relationship-to-genevieve-nnaji/"),
+                                  "https://mfeatures24.com.ng/"),
                               topStories(title, featureImage, context,
-                                  "https://mfeatures24.com.ng/2023/08/05/i-love-her-but-i-would-never-call-her-again-pete-edochie-discusses-his-relationship-to-genevieve-nnaji/"),
+                                  "https://mfeatures24.com.ng/"),
                               topStories(title, featureImage, context,
-                                  "https://mfeatures24.com.ng/2023/08/05/i-love-her-but-i-would-never-call-her-again-pete-edochie-discusses-his-relationship-to-genevieve-nnaji/"),
+                                  "https://mfeatures24.com.ng/"),
                             ],
                           ),
                         ),

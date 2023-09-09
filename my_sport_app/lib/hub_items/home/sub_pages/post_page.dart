@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-import '../colors.dart';
+import '../../../constants/colors.dart';
+
 
 class PostPage extends StatefulWidget {
   const PostPage({super.key});

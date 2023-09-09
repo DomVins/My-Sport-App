@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'colors.dart';
-import 'crate.dart';
+import 'constants/colors.dart';
+import 'hub.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

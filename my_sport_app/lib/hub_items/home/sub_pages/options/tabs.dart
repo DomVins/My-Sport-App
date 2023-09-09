@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_sport_app/crate.dart';
+import 'package:my_sport_app/hub.dart';
 
 class Tabs extends StatefulWidget {
   const Tabs({super.key});

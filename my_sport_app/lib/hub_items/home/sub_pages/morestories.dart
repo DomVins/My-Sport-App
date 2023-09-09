@@ -2,7 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import '../colors.dart';
+import '../../../constants/colors.dart';
+
 
 class MoreTopStories extends StatefulWidget {
   const MoreTopStories({super.key});

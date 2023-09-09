@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'crate_items/home.dart';
+import 'hub_items/home/home.dart';
 
 class Crate extends StatefulWidget {
   const Crate({Key? key}) : super(key: key);
@@ -38,7 +38,7 @@ class _CrateState extends State<Crate> {
     return [
       const Home(),
       const Center(
-        child: Text('Video'),
+        child: Text('Follow'),
       ),
       const Center(
         child: Text('Match'),
@@ -88,7 +88,7 @@ class _CrateState extends State<Crate> {
               const BottomNavigationBarItem(
                   label: 'Video',
                   icon: Icon(
-                    Icons.tv_rounded,
+                    Icons.sports_football_rounded,
                   )),
               const BottomNavigationBarItem(
                   label: 'Match', icon: Icon(Icons.sports)),
